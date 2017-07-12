@@ -15,7 +15,7 @@
     终端下输入：pyspider all
 
 4. 浏览器访问  http://localhost:5000
-![avatar](pyspider_dashboard.png)
+![avatar](pyspider/pyspider_dashboard.png)
 ```
 说明：
 队列统计是为了方便查看爬虫状态，优化爬虫爬取速度新增的状态统计．每个组件之间的数字就是对应不同队列的排队数量．通常来是０或是个位数．如果达到了几十甚至一百说明下游组件出现了瓶颈或错误，需要分析处理．
@@ -34,27 +34,27 @@
 a.定义project name
 b.定义start url
 ```
-![avatar](douban_create.png)
+![avatar](pyspider/douban_create.png)
 6. 运行
 ```
     点击create后pyspider会自动生成代代码，webUI左半部分是运行时输出的调试信息，右版部分是编写的代码。ps：更改代码后注意要先save后run。
 点击run后pyspider会调用on_start方法并返回base_url。
 ```
-![avatar](run_on_start.png)
+![avatar](pyspider/run_on_start.png)
 ```
     此时follows会有一个小红点，点击切换到follows页面点击index_page的开始按钮。on_start方法解析base_url并回掉callback参数中定义的index_page方法
 index_page方法中使用正则表达式的方法解析response中的所有http链接并返回一个生成器对象 "response.doc('a[href^="http"]').items()"。
 不过还是推荐使用css筛选器。
 ```
-![avatar](index_page.png)
+![avatar](pyspider/index_page.png)
 ```
     ps:如果base_url进行了分页，那么可以指定start_page 和 end_page 抓去指定分页的数据
 ```
-![avatar](start_more.png)
+![avatar](pyspider/start_more.png)
 ```
     此时点击切换到web页面，可以发现可以看到被抓取到页面
 ```
-![avatar](web_page.png)
+![avatar](pyspider/web_page.png)
 ```
     a.细心到你可能会发现为啥没有电影cell直接显示了一个加载中呢？因为页面这里用到是JS渲染，普通的html抓取无法解决这个问题。此时可以使用PhantomJS和js_script
 解决js渲染和渲染后的click操作。
@@ -65,20 +65,20 @@ index_page方法中使用正则表达式的方法解析response中的所有http�
     b.css筛选器：点击enable css selector helper后web页面上方多出一行，此时鼠标点击加载更多后就能看到这个控件的css path了，点击右侧的尖头会自动生成到脚本中。
 是不是很方便～！
 ```
-![avatar](web_page2.png)
+![avatar](pyspider/web_page2.png)
 ```
     通过css筛选器，依次筛选出详情页的URL、电影名称、简介、封面并调用save函数将图片和信息存储下来。
 ```
-![avatar](detail_info.png)
+![avatar](pyspider/detail_info.png)
 ```
     运行task 单步调试后保存退出到首页，将project改成debug or running 点击run就可以运行爬虫了
 rate/burst：rate表示每间隔1秒抓取一个页面 burst 三个线程
 ```
-![avatar](webui.png)
+![avatar](pyspider/webui.png)
 ```
     抓到到东东！
 ```
-![avatar](movies.png)
+![avatar](pyspider/movies.png)
 7. 运行时数据保存路径
  ```
  mac : /Library/Python/2.7/site-packages/pyspider
