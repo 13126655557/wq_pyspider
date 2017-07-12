@@ -1,0 +1,248 @@
+pyspider中文脚本编写指南
+ Python	 拈花古佛  2年前 (2015-07-14)  1321℃  0评论
+project
+脚本分为不同的 project，不同的 project 之间的任务互相独立，建议为不同的站点建立不同的 project
+
+project 属性
+group – 分组标识，暂时仅用于区分
+
+name – 脚本的名字，只允许 a-zA-Z0-9_
+
+status – 任务状态，只有处于 DEBUG 和 RUNNING 状态任务才会被执行
+
+TODO – 新建立的脚本所处的状态
+
+STOP – 停止
+
+CHECKING – 当任务在 DEBUG 或 RUNNING 状态被修改时，会自动变为 CHECKING，暂停任务执行
+
+DEBUG – 任务可以开始执行，handler的 __env__[‘debug’] == True
+
+RUNNING – 任务正常执行状态
+
+rate – 每秒抓取页面个数
+
+burst – 并发数
+
+task
+任务是 spider 调度的最小单位。
+
+taskid 是任务的唯一区分标识，默认使用 url 的 md5 作为 taskid（即根据 url 对抓取去重）
+
+不同 project 间任务相互独立（不同 project 间 taskid 可以相同）
+
+任务状态
+
+active(1) – 活动状态，表示任务在队列中等待被抓取（包括在队列中、抓取中、执行时间未到、重试中）
+
+success(2) – 抓取成功状态
+
+failed(3) – 经过重试后抓取失败
+
+bad(4) – 损坏，暂未使用
+
+任务调度
+只有处于 active 状态的任务才会得到调度，scheduler 对于每个 project 有两个队列：
+
+时间队列 – 任务尚未到达执行时间，时间拉长重试也在这个队列中
+
+优先队列 – 任务已经到达执行时间，任务会根据优先级 priority ，在有流量配额情况下，依次发起调度
+
+scheduler 会等待每一个调度任务返回，当执行失败时，会根据 retries 参数，拉长一定时间发起重试。当超时结果未返回时，会无限次地重新发起调度
+
+新/旧任务请求
+当产生一个库中没有的任务请求时，会根据参数 exetime 中设定的执行时间决定是放入 时间队列 还是 优先队列。
+
+当新请求已经在队列中（即任务状态是 active 时），会忽略新的请求，即使它们的参数不一致。
+
+可以通过 force_update参数强制更新处于 active 状态的任务
+
+当任务状态是 success 或 failed 时。参数 age 会检测 上次抓取时间 + age 是否大于当前时间，若大于，则会重启任务。或者，您可以通过设置 itag （例如前链中提取的更新时间）参数，当本次请求的 itag 与上次不同时，会重启任务。
+
+script
+pyspider的脚本都是python环境的，没有做任何隔离，可以调用 host 机器环境中的任何 lib 和资源。
+
+如果您担心安全问题，请使用 linux 的用户隔离机制隔离 processor
+
+示例脚本：http://demo.pyspider.org/
+
+执行环境
+环境变量
+__project__ == self.project 当前任务信息
+
+self.project_name 当前脚本名
+
+self.response 当前请求的response
+
+self.task 当前请求的原始task信息
+
+logging，logger 和 print的信息会被采集，请使用 logger 打印日志（默认 logging 已经 import 到环境中，请不要再次导入）
+
+可以通过 projects 伪模块将其他 project 导入成 module，例如 from projects import some_project
+
+脚本约束
+接口请从 from libs.base_handler import * 中导入
+
+脚本必须有至少一个的继承自 BaseHandler 的类
+
+例外：当环境中有多个继承自 BaseHandler （例如：二次派生时），请指定 __class__ = Handler
+
+每个 task 由参数 callback 指定的成员函数解析（默认的 callback 是 __call__）
+
+完整的 callback 函数原型是：def foo(self, response, task) 您可以忽略您不需要的参数（但需要顺序一致）例如：foo(self, res)
+
+response 是一个抓取结果的对象，完整 api 见下文
+
+task 是原始的请求 json，和您在 调试器 左侧 绿色区域 看到的结果一致
+
+默认 status_code 不为 200 的请求不会发给回调函数解析，请用 @catch_status_code_error 修饰回调函数，以捕获抓取异常。
+
+on_start 是脚本执行的入口，当您在主页/上点击 Run 时，会触发 on_start 执行
+
+函数的返回内容会被 on_result(self, result) 函数捕获，您可以在这里将其输出到数据库中
+
+API接口
+BaseHandler
+source： libs/base_handler.py
+
+特殊接口
+def on_start(self):
+当在首页上点击 project 的 run 按钮时被调用
+
+def on_result(self, result):
+所有 callback 函数 return 时被调用（包括返回值为 None 时）。默认的 on_result 回调会将结果发送给 result_work，默认的 result_work 会将结果储存到 resultdb 中。如果覆盖这个方法，会阻止默认行为。使用super(Handler, self).on_result(result) 调用父类方法以将结果发送给 result_worker。
+
+def on_message(self, project, message):
+当收到其他 project 发送的消息时被调用，project 为发送消息的 project 的名字，message 可能为任意类型。使用 send_message 发送消息。
+
+module方法
+@config(**kwargs)
+修饰回调函数，给 self.crawl 接口设定 function 级默认值
+
+@every(minutes, seconds)
+修饰 on_cronjob 回调函数，每 minutes 分钟执行
+
+@catch_status_code_error
+修饰回调函数，回调函数接受抓取异常数据。默认的 callback 会直接对非200返回直接抛出异常。
+
+@not_send_status
+修饰回调函数，回调函数不发送状态包给 scheduler，不建议使用.
+
+类成员变量
+crawl_config:dict 给 self.crawl 接口设定 class 级默认值
+
+方法
+BaseHandler.crawl(url, **kwargs)
+参数列表，以下参数，除了 url 都是可选的。您可以使用 crawl_config 和/或 @config(_config:dict) 给类或方法设定默认值。但 直接调用的优先级 高于 方法级默认值 高于 类默认值。修改默认值不会影响已经创建了的任务。
+
+基本
+url – 需要抓取的url，支持url数组，支持dataurl：data:,content > 当有params参数存在时，最终url为拼接后的
+> 当url中有中文时，会进行 % 编码
+
+taskid – 默认取 url 的 md5
+
+callback – 回调函数，可以是 self.foo 也可以是函数的名字 “foo”，默认 __call__
+
+save – 传递给下一个请求的数据，可以是任何可 json 的对象
+
+force_update – 强制修改队列中的任务信息（见上文）
+
+调度
+priority – 调度优先级，越高越好
+
+retries – 重试次数
+
+exetime – 执行时间，为 time.time() 的 timestamp
+
+age – 页面有效期，在有效期内抓取过的页面不会重新抓取
+
+itag – 能反映页面最后更新时间的标记，一般取自最后更新时间
+
+抓取
+method – POST/GET/HEAD 等
+
+params – url中 ?a=b 的部分，类型 dict
+
+data – POST正文的内容，string 或 dict > GET有data可能会导致抓取失败
+
+files – 上传文件，{‘key’: (‘file.name’: ‘content’)}
+
+headers – 请球头，类型dict
+
+cookies – 请求的 Cookies，类型 dict
+
+timeout – 请求超时
+
+allow_redirects – 是否跟随30x跳转，默认 True
+
+proxy – 是否使用代理抓取，默认 True（需要 fetcher 支持）
+
+etag – 是否启用etag（当页面无变化时不会抓取内容，也不会触发解析）
+
+last_modifed – 是否启用last_modifed（当页面无变化时不会抓取内容，也不会触发解析）
+
+使用JS渲染
+fetch_type – 设置为 phantomjs或js时，调用 phantomjs 进行js渲染，加载 ajax 内容。需要安装 phantomjs，并为 fetcher 设置 phantomjs_proxy。
+
+js_script – 设置一段 JS 脚本，在页面加载完成（前）时执行。进行模拟点击等动作。
+
+js_run_at – document-start/document-end
+
+load_images – 开启图片，默认关闭。
+
+BaseHandler.send_message(project, msg, [url])
+向其他 project 发送 msg，对方脚本可以通过 on_message 回调获得消息。默认的 url 是固定的，在 on_message 中发往 on_result 的数据会相互覆盖，使用 url 参数为每个结果设置不同的 URL地址（例如：http://example.com/page-3.html#result-1）
+
+Response
+source： libs/response.py
+
+属性
+Response.status_code
+请求返回的状态码
+
+Response.url
+请求的url（当发生跳转时，为跳转后的url）
+
+Response.orig_url
+原请求的url
+
+Response.headers
+返回头
+
+Response.cookies
+返回的cookies
+
+Response.error
+请求错误信息，string类型
+
+Response.time
+请求用时
+
+Response.ok
+请求是否成功
+
+Response.encoding
+页面的编码，会根据header，content自动检测；当检测错误时，可以手动设定编码覆盖
+
+Response.text
+页面经过转码成为 unicode 的数据
+
+Response.content
+页面未转码内容
+
+Response.save
+从上一个任务中传下来的数据
+
+Response.json
+尝试解析 json
+
+Response.doc
+将页面建树，返回一个 pyquery 对象（已将相对地址转为绝对地址 make_links_absolute ）
+
+方法
+Response.raise_for_status()
+尝试抛出抓取异常
+
+FAQ
+如何删除一个任务
+将任务的 group 设置为 delete ，并将状态设置为 STOP，没有更新 24小时 之后，scheduler 会自动删除任务
