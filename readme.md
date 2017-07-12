@@ -1,5 +1,6 @@
 
-#简
+#宅男神器
+
 1.安装pyspider
 
     sudo pip install pyspider
