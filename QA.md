@@ -47,7 +47,7 @@
        9.Android和IOS平台
 
 ###发展史
-![avatar](/Users/wangquan/wangquan/python/wq_pyspider/text/1.png)
+![avatar](text/img/1.png)
 
 ###AppCrawler环境搭建及运行
     需要的工具：Appium, Android SDK，xcode, Java,  appcrawler.jar
@@ -81,7 +81,7 @@
     个控件的布局抽象为接口的返回。android 标记id(root节点) ：默认为activety。ios 没有activity概念所以需要手动指定，默认使用UIANavigationBar
     作为唯一标记～！ps：不适合所有应用所以推荐自定义。
     以内涵段子android为例运行后的结果如图所示：
-![avatar](/Users/wangquan/wangquan/python/wq_pyspider/text/2.png)
+![avatar](text/img/1.png)
 
 
 ####遍历控制config.yml
