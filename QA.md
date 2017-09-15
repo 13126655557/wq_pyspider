@@ -1,31 +1,5 @@
-#<center>UI自动化在测试中的应用</center >
+#<center>遍历自动化在测试中的应用</center >
 
-##一、广告统计验证自动化
-
-###背景
-        在每个版本迭代过程中，测试埋点必不可少而且非常重要的一环。它的特点是：埋点多、场景多、验证点复杂、重复性高、工作量大。特别是广告埋
-    点事件直接关系到收入是每个版本迭代中必须回归的case。
-
-###解决方案：
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##二、遍历自动化
 
 ###背景
       在回归测试过程中，通常我们会利用Monkey来模拟用户触摸屏幕、滑动Trackball、按键等操作来对设备上的程序进行测试，检测程序多久的时间会发生异常。
@@ -50,8 +24,8 @@
 ![avatar](text/img/1.png)
 
 ###AppCrawler环境搭建及运行
-    需要的工具：Appium, Android SDK，xcode, Java,  appcrawler.jar
-    ps:运行依赖appium 安装发放详见：20160928_APPIUM环境搭建(https://wiki.bytedance.net/pages/viewpage.action?pageId=66011832)
+需要的工具：Appium, Android SDK，xcode, Java,  appcrawler.jar
+ps:运行依赖appium 安装发放详见：20160928_APPIUM环境搭建(https://wiki.bytedance.net/pages/viewpage.action?pageId=66011832)
 
     默认运行：
         命令行进入appcrawler.jar所在文件夹，
