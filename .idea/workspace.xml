@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f3d9dfd5-08d8-418a-b63a-5569e40b6a05" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/wq_pypi_demo/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/wq_pypi_demo/wq_random/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/wq_pypi_demo/wq_random/wq_print_random_num.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/bcy_iOS_inhouse.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/essay_iOS_jokeInhouse.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/girls_icon.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/girlsinhouse.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_aweme.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_boom_inhouse_dev.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_joke.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_joke_backup.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_joke_backup2.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_joke_dailybuild.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_joke_tag_backup.plist" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ci_build/tt_iOS_live.plist" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/setup.py" afterPath="$PROJECT_DIR$/wq_pypi_demo/setup.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
-    </list>
+    <list default="true" id="f3d9dfd5-08d8-418a-b63a-5569e40b6a05" name="Default" comment="" />
     <ignored path="wq_pyspider.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -146,6 +127,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="wq_pyspider" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wq_pyspider" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="wq_pyspider" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ci_build" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -565,7 +560,14 @@
       <option name="project" value="LOCAL" />
       <updated>1518340191432</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add ci build ***plist">
+      <created>1518342168360</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1518342168360</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="ToolWindowManager">
