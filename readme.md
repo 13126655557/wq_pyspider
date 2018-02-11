@@ -1,6 +1,5 @@
 
-#爬虫
-
+#Pyspider
 1.安装pyspider
 
     sudo pip install pyspider
