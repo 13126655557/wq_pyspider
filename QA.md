@@ -25,7 +25,7 @@
 
 ###AppCrawler环境搭建及运行
 需要的工具：Appium, Android SDK，xcode, Java,  appcrawler.jar
-ps:运行依赖appium 安装发放详见：20160928_APPIUM环境搭建(https://wiki.bytedance.net/pages/viewpage.action?pageId=66011832)
+ps:运行依赖appium 安装发放详见：20160928_APPIUM环境搭建
 
     默认运行：
         命令行进入appcrawler.jar所在文件夹，
